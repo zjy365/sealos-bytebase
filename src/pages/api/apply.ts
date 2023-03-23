@@ -1,4 +1,4 @@
-import { generateByteBaseTemplate } from '@/interfaces/bytebase'
+import { generateByteBaseTemplate, ByteBaseStatus } from '@/interfaces/bytebase'
 import { authSession } from '@/service/auth'
 import {
   ApplyYaml,
@@ -46,8 +46,16 @@ export default async function handler(
         bytebase_name
       )
 
-      if (byteBaseUserDesc?.body) {
-        return jsonRes(res, { data: byteBaseUserDesc.body })
+      if (byteBaseUserDesc?.body?.status) {
+        const bytebaseStatus = byteBaseUserDesc.body.status as ByteBaseStatus
+        if (bytebaseStatus.availableReplicas > 0) {
+          // temporarily add domain scheme
+          let domain = bytebaseStatus.domain || ''
+          if (!domain.startsWith('https://')) {
+            domain = 'https://' + domain
+          }
+          return jsonRes(res, { data: domain })
+        }
       }
     } catch (error) {
       // console.log(error)

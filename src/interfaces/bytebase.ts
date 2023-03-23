@@ -1,5 +1,10 @@
 import * as yaml from 'js-yaml'
 
+export type ByteBaseStatus = {
+  availableReplicas: number
+  domain?: string
+}
+
 export type ByteBaseForm = {
   namespace: string
   bytebase_name: string

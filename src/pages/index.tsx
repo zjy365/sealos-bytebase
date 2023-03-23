@@ -30,7 +30,9 @@ export default function Index() {
     {
       onSuccess: (data) => {
         if (data?.data?.code === 200) {
-          setUrl(data?.data?.data?.spec?.externalUrl)
+          // window.location.replace(data?.data?.data)
+          // console.log(data?.data?.data)
+          setUrl(data?.data?.data)
         }
         if (data?.data?.code === 201) {
           refetch()
@@ -40,13 +42,14 @@ export default function Index() {
         console.log(err, 'err')
       },
       retry: 3,
+      retryDelay: (attemptIndex) => Math.min(1000 * attemptIndex, 2000),
     }
   )
   if (isLoading) {
     return <div className={clsx(styles.loading, styles.err)}>loading</div>
   }
 
-  if (!isUserLogin() && process.env.NODE_ENV !== 'development') {
+  if (isError) {
     return (
       <div className={styles.err}>
         please go to &nbsp;<a href="https://cloud.sealos.io/">sealos</a>
