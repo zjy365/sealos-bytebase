@@ -8,6 +8,7 @@ specifiers:
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
   axios: 1.2.1
+  clsx: ^1.2.1
   eslint: 8.36.0
   eslint-config-next: 13.2.4
   immer: ^9.0.16
@@ -24,6 +25,7 @@ dependencies:
   '@kubernetes/client-node': registry.npmmirror.com/@kubernetes/client-node/0.18.0
   '@tanstack/react-query': registry.npmmirror.com/@tanstack/react-query/4.28.0_biqbaboplfbrettd7655fr4n2y
   axios: registry.npmmirror.com/axios/1.2.1
+  clsx: registry.npmmirror.com/clsx/1.2.1
   eslint: registry.npmmirror.com/eslint/8.36.0
   eslint-config-next: registry.npmmirror.com/eslint-config-next/13.2.4_j4766f7ecgqbon3u7zlxn5zszu
   immer: registry.npmmirror.com/immer/9.0.19
@@ -883,6 +885,13 @@ packages:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/client-only/-/client-only-0.0.1.tgz}
     name: client-only
     version: 0.0.1
+    dev: false
+
+  registry.npmmirror.com/clsx/1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/clsx/-/clsx-1.2.1.tgz}
+    name: clsx
+    version: 1.2.1
+    engines: {node: '>=6'}
     dev: false
 
   registry.npmmirror.com/color-convert/2.0.1:

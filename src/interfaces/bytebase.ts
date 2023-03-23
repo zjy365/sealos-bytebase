@@ -1,10 +1,5 @@
 import * as yaml from 'js-yaml'
 
-export type ByteBaseStatus = {
-  availableReplicas: number
-  domain?: string
-}
-
 export type ByteBaseForm = {
   namespace: string
   bytebase_name: string
@@ -18,13 +13,6 @@ export const generateByteBaseTemplate = (form: ByteBaseForm): string => {
     metadata: {
       name: form.bytebase_name,
       namespace: form.namespace,
-      labels: {
-        'app.kubernetes.io/name': 'bytebase',
-        'app.kubernetes.io/instance': 'bytebase-sample',
-        'app.kubernetes.io/part-of': 'bytebase',
-        'app.kubernetes.io/managed-by': 'kustomize',
-        'app.kubernetes.io/created-by': 'bytebase',
-      },
     },
     spec: {
       image: 'bytebase/bytebase:1.13.0',

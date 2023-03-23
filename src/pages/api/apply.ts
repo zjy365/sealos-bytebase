@@ -1,4 +1,4 @@
-import { generateByteBaseTemplate, ByteBaseStatus } from '@/interfaces/bytebase'
+import { generateByteBaseTemplate } from '@/interfaces/bytebase'
 import { authSession } from '@/service/auth'
 import {
   ApplyYaml,
@@ -10,11 +10,11 @@ import {
 import { jsonRes } from '@/service/response'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-export const ByteBase_meta: CRDMeta = {
-  group: 'ByteBase.sealos.io',
+export const ByteBaseMeta: CRDMeta = {
+  group: 'db.sealos.io',
   version: 'v1',
-  namespace: 'ByteBase-app',
-  plural: 'ByteBases',
+  namespace: 'bytebase-app',
+  plural: 'bytebases',
 }
 
 export default async function handler(
@@ -31,32 +31,23 @@ export default async function handler(
       throw new Error('kube_user get failed')
     }
 
-    const byteBase_name = 'bytebase-' + kube_user.name
+    const bytebase_name = 'bytebase-' + kube_user.name
     const namespace = GetUserDefaultNameSpace(kube_user.name)
 
     // first get user namespace crd
-    let byteBase_meta_user = { ...ByteBase_meta }
-    byteBase_meta_user.namespace = namespace
+    let bytebase_meta_user = { ...ByteBaseMeta }
+    bytebase_meta_user.namespace = namespace
 
     try {
       // get crd
-      const ByteBaseUserDesc = await GetCRD(
+      const byteBaseUserDesc = await GetCRD(
         kc,
-        byteBase_meta_user,
-        byteBase_name
+        bytebase_meta_user,
+        bytebase_name
       )
-      console.log(ByteBaseUserDesc)
 
-      if (ByteBaseUserDesc?.body?.status) {
-        const ByteBaseStatus = ByteBaseUserDesc.body.status as ByteBaseStatus
-        if (ByteBaseStatus.availableReplicas > 0) {
-          // temporarily add domain scheme
-          let domain = ByteBaseStatus.domain || ''
-          if (!domain.startsWith('https://')) {
-            domain = 'https://' + domain
-          }
-          return jsonRes(res, { data: domain })
-        }
+      if (byteBaseUserDesc?.body) {
+        return jsonRes(res, { data: byteBaseUserDesc.body })
       }
     } catch (error) {
       // console.log(error)
@@ -64,7 +55,7 @@ export default async function handler(
 
     const ByteBase_yaml = generateByteBaseTemplate({
       namespace: namespace,
-      bytebase_name: byteBase_name,
+      bytebase_name: bytebase_name,
     })
     const result = await ApplyYaml(kc, ByteBase_yaml)
     jsonRes(res, { code: 201, data: result, message: '' })
