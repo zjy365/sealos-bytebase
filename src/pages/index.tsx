@@ -31,7 +31,6 @@ export default function Index() {
       onSuccess: (data) => {
         if (data?.data?.code === 200) {
           // window.location.replace(data?.data?.data)
-          // console.log(data?.data?.data)
           setUrl(data?.data?.data)
         }
         if (data?.data?.code === 201) {
