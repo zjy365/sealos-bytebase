@@ -11,7 +11,7 @@ import { jsonRes } from '@/service/response'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export const ByteBaseMeta: CRDMeta = {
-  group: 'db.sealos.io',
+  group: 'bytebase.db.sealos.io',
   version: 'v1',
   namespace: 'bytebase-app',
   plural: 'bytebases',
@@ -50,11 +50,7 @@ export default async function handler(
         const bytebaseStatus = byteBaseUserDesc.body.status as ByteBaseStatus
         if (bytebaseStatus.availableReplicas > 0) {
           // temporarily add domain scheme
-          let domain = bytebaseStatus.domain || ''
-          if (!domain.startsWith('https://')) {
-            domain = 'https://' + domain
-          }
-          return jsonRes(res, { data: domain })
+          return jsonRes(res, { data: bytebaseStatus.domain || '' })
         }
       }
     } catch (error) {

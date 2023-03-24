@@ -13,7 +13,7 @@ export type ByteBaseForm = {
 // this template is suite for golang(kubernetes and sealos)'s template engine
 export const generateByteBaseTemplate = (form: ByteBaseForm): string => {
   const temp = {
-    apiVersion: 'db.sealos.io/v1',
+    apiVersion: 'bytebase.db.sealos.io/v1',
     kind: 'Bytebase',
     metadata: {
       name: form.bytebase_name,

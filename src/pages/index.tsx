@@ -1,6 +1,5 @@
 import request from '@/service/request'
 import useSessionStore from '@/stores/session'
-import { isUrlValid } from '@/utils/check'
 import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
@@ -29,29 +28,32 @@ export default function Index() {
     ['applyApp'],
     () => request.post('/api/apply'),
     {
-      onSuccess: (data) => {
-        if (data?.data?.code === 200) {
-          if (isUrlValid(data?.data?.data)) {
-            // window.location.replace(data?.data?.data)
-            setUrl(data?.data?.data)
-          }
+      onSuccess: (res) => {
+        if (res?.data?.code === 200 && res?.data?.data) {
+          const url = res?.data?.data
+          fetch(url, { mode: 'no-cors' })
+            .then(() => {
+              setUrl(url)
+              window.location.replace(url)
+            })
+            .catch((err) => console.log(err))
         }
-        if (data?.data?.code === 201) {
+        if (res?.data?.code === 201) {
           refetch()
         }
       },
       onError: (err) => {
         console.log(err, 'err')
       },
-      retry: 3,
-      retryDelay: (attemptIndex) => Math.min(1000 * attemptIndex, 2000),
+      refetchInterval: url === '' ? 1000 : false,
+      enabled: url === '',
     }
   )
   if (isLoading) {
     return <div className={clsx(styles.loading, styles.err)}>loading</div>
   }
 
-  if (isError) {
+  if (!isUserLogin && isError) {
     return (
       <div className={styles.err}>
         please go to &nbsp;<a href="https://cloud.sealos.io/">sealos</a>
