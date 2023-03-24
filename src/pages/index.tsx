@@ -1,5 +1,6 @@
 import request from '@/service/request'
 import useSessionStore from '@/stores/session'
+import { isUrlValid } from '@/utils/check'
 import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
@@ -30,8 +31,10 @@ export default function Index() {
     {
       onSuccess: (data) => {
         if (data?.data?.code === 200) {
-          // window.location.replace(data?.data?.data)
-          setUrl(data?.data?.data)
+          if (isUrlValid(data?.data?.data)) {
+            // window.location.replace(data?.data?.data)
+            setUrl(data?.data?.data)
+          }
         }
         if (data?.data?.code === 201) {
           refetch()
